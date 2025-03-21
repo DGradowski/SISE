@@ -39,6 +39,7 @@ namespace Puzzle
 				}
 			}
 			moves = state.Moves + move;
+			MakeMove(move);
 		}
 
 		public int Rows => board.Length;
@@ -78,7 +79,7 @@ namespace Puzzle
 
 		public void MakeMove(String move)
 		{
-			if (!IsMoveLegal(move)) return;
+			if (!IsMoveLegal(move)) throw new Exception("Trying to make illegal move");
 			switch (move)
 			{
 				case "L":

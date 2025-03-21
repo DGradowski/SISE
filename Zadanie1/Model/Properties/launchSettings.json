@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "Model": {
+      "commandName": "Project",
+      "commandLineArgs": "skibidi"
+    }
+  }
+}
