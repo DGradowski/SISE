@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Puzzle
 {
-	internal class PuzzleState
+	public class PuzzleState
 	{
 		private String moves;
 		private int[][] board;

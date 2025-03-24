@@ -2,7 +2,7 @@
   "profiles": {
     "Model": {
       "commandName": "Project",
-      "commandLineArgs": "skibidi"
+      "commandLineArgs": "plansza.txt"
     }
   }
 }
