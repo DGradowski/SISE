@@ -13,17 +13,17 @@ namespace Puzzle
 		private int zeroRow = 0;
 		private int zeroCol = 0;
 
-		public PuzzleState(int rows, int columns, String prevMove = "")
+		public PuzzleState(int rows, int columns, String prevMoves = "")
 		{
 			board = new int[rows][];
 			for (int i = 0; i < rows; i++)
 			{
 				board[i] = new int[columns];
 			}
-			moves = prevMove;
+			moves = prevMoves;
 		}
 
-		public PuzzleState(PuzzleState state, String move)
+		public PuzzleState(PuzzleState state, char move)
 		{
 			board = new int[state.Rows][];
 			for (int i = 0; i < state.Rows; i++)
@@ -67,32 +67,32 @@ namespace Puzzle
 			}
 			return true;
 		}
-		public bool IsMoveLegal(String move)
+		public bool IsMoveLegal(char move)
 		{
 			FindZero();
-			if (zeroCol == 0 && move == "L") return false;
-			if (zeroCol == Columns - 1 && move == "R") return false;
-			if (zeroRow == 0 && move == "U") return false;
-			if (zeroRow == Rows - 1 && move == "D") return false;
+			if (zeroCol == 0 && move == 'L') return false;
+			if (zeroCol == Columns - 1 && move == 'R') return false;
+			if (zeroRow == 0 && move == 'U') return false;
+			if (zeroRow == Rows - 1 && move == 'D') return false;
 			return true;
 		}
 
-		public void MakeMove(String move)
+		public void MakeMove(char move)
 		{
 			if (!IsMoveLegal(move)) throw new Exception("Trying to make illegal move");
 			switch (move)
 			{
-				case "L":
+				case 'L':
 					(board[zeroRow][zeroCol], board[zeroRow][zeroCol - 1]) = (board[zeroRow][zeroCol - 1], board[zeroRow][zeroCol]);
 					break;
-				case "R":
+				case 'R':
 					(board[zeroRow][zeroCol], board[zeroRow][zeroCol + 1]) = (board[zeroRow][zeroCol + 1], board[zeroRow][zeroCol]);
 					break;
-				case "U":
-					(board[zeroRow][zeroCol], board[zeroRow + 1][zeroCol]) = (board[zeroRow + 1][zeroCol], board[zeroRow][zeroCol]);
-					break;
-				case "D":
+				case 'U':
 					(board[zeroRow][zeroCol], board[zeroRow - 1][zeroCol]) = (board[zeroRow - 1][zeroCol], board[zeroRow][zeroCol]);
+					break;
+				case 'D':
+					(board[zeroRow][zeroCol], board[zeroRow + 1][zeroCol]) = (board[zeroRow + 1][zeroCol], board[zeroRow][zeroCol]);
 					break;
 			}
 		}

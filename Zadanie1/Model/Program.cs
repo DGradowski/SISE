@@ -1,15 +1,18 @@
 ﻿using Puzzle;
+using Algorithms;
 using System.ComponentModel;
 using System.Reflection.PortableExecutable;
 
 public class MainClass
 {
-	
 	static void Main(string[] args)
 	{
 		PuzzleState state;
 		state = LoadBoard(args[0]);
 		DrawBoard(state);
+		Algorithm bfs = new BreadthFirstSearch("LUDR");
+		PuzzleState newState = bfs.FindSolution(state);
+		DrawBoard(newState);
 	}
 
 	//  strategia "wszerz" z porządkiem przeszukiwania sąsiedztwa prawo-dół-góra-lewo:

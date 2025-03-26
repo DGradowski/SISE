@@ -15,14 +15,18 @@ namespace Algorithms
 		private int solutionLength;
 		// liczbę stanów odwiedzonych i przetworzonych;
 		private int checkedStates;
+		// liczbę stanów odwiedzonych i przetworzonych;
+		private int processedStates;
 		// maksymalną osiągniętą głębokość rekursji;
-		private int rekursionDepth;
+		private int recursionDepth;
 		// czas trwania procesu obliczeniowego.
 		private double time;
 
-		protected Algorithm()
-		{
-		}
+		public int SolutionLength { get => solutionLength; set => solutionLength = value; }
+		public int CheckedStates { get => checkedStates; set => checkedStates = value; }
+		public int RecursionDepth { get => recursionDepth; set => recursionDepth = value; }
+		public double Time { get => time; set => time = value; }
+		public int ProcessedStates { get => processedStates; set => processedStates = value; }
 
 		abstract public PuzzleState FindSolution(PuzzleState state);
 	}
