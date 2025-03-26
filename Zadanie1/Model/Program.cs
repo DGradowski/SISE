@@ -10,7 +10,7 @@ public class MainClass
 		PuzzleState state;
 		state = LoadBoard(args[0]);
 		DrawBoard(state);
-		Algorithm bfs = new BreadthFirstSearch("URDL");
+		Algorithm bfs = new DepthFirstSearch("LDRU", 20);
 		PuzzleState newState = bfs.FindSolution(state);
 		Console.WriteLine();
 		DrawBoard(newState);
