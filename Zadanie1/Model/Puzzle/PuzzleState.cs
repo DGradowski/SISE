@@ -55,7 +55,7 @@ namespace Puzzle
 			{
 				for(int j = 0; j < board[i].Length; j++)
 				{
-					if (i == board.Length && j == board[i].Length)
+					if (i == board.Length - 1 && j == board[i].Length - 1)
 					{
 						if (board[i][j] != 0) return false;
 					}
@@ -80,6 +80,7 @@ namespace Puzzle
 		public void MakeMove(char move)
 		{
 			if (!IsMoveLegal(move)) throw new Exception("Trying to make illegal move");
+			FindZero();
 			switch (move)
 			{
 				case 'L':
