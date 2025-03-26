@@ -20,12 +20,12 @@ namespace Algorithms
 		// maksymalną osiągniętą głębokość rekursji;
 		private int recursionDepth;
 		// czas trwania procesu obliczeniowego.
-		private double time;
+		private long time;
 
 		public int SolutionLength { get => solutionLength; set => solutionLength = value; }
 		public int CheckedStates { get => checkedStates; set => checkedStates = value; }
 		public int RecursionDepth { get => recursionDepth; set => recursionDepth = value; }
-		public double Time { get => time; set => time = value; }
+		public long Time { get => time; set => time = value; }
 		public int ProcessedStates { get => processedStates; set => processedStates = value; }
 
 		abstract public PuzzleState FindSolution(PuzzleState state);

@@ -12,7 +12,14 @@ public class MainClass
 		DrawBoard(state);
 		Algorithm bfs = new BreadthFirstSearch("URDL");
 		PuzzleState newState = bfs.FindSolution(state);
+		Console.WriteLine();
 		DrawBoard(newState);
+		Console.WriteLine("Rozwiązanie: {0}", newState.Moves);
+		Console.WriteLine("Długość znalezionego rozwiązania: {0}", bfs.SolutionLength);
+		Console.WriteLine("Liczba stanów odwiedzonych: {0}", bfs.CheckedStates);
+		Console.WriteLine("Liczba stanów przetworzonych: {0}", bfs.ProcessedStates);
+		Console.WriteLine("Maksymalna osiągnięta głębokość rekursji: {0}", bfs.RecursionDepth);
+		Console.WriteLine("Czas trwania procesu obliczeniowego (ms): {0}", bfs.Time);
 	}
 
 	//  strategia "wszerz" z porządkiem przeszukiwania sąsiedztwa prawo-dół-góra-lewo:
