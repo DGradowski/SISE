@@ -15,15 +15,22 @@ namespace Heuristics
 
 		protected Heuristic(string priority = "")
 		{
-			this.orderPriority = priority;
+			orderPriority = priority;
 		}
 
-		public PuzzleState SelectPath(PuzzleState[] paths)
+		public PuzzleState SelectPath(PuzzleState state)
 		{
+			List<PuzzleState> legalStates = new List<PuzzleState>();
+			foreach (char d in "LDRU")
+			{
+				if (state.IsMoveLegal(d)) legalStates.Add(new PuzzleState(state, d));
+			}
+
 			List<PuzzleState> states = new List<PuzzleState>();
-			states.Add(paths[0]);
+
+			states.Add(legalStates[0]);
 			double currPriority = CalculatePriority(states[0]);
-			foreach (PuzzleState path in paths)
+			foreach (PuzzleState path in legalStates)
 			{
 				double newPrioriy = CalculatePriority(path);
 				if (newPrioriy > currPriority)
@@ -32,19 +39,18 @@ namespace Heuristics
 					states.Clear();
 					states.Add(path);
 				}
-			}
-			Random rand = new Random();
-			if (orderPriority.Length == 0) return states[rand.Next(states.Count)];
-			foreach (char move in orderPriority)
-			{
-				foreach (PuzzleState state in states)
+				else if (newPrioriy == currPriority)
 				{
-					if (state.Moves.Last() == move) return state;
+					states.Add(path);
 				}
 			}
-			return states[0];
+
+			if (states.Count == 1) return states[0];
+			else return ResolveTie(states);
 		}
 
 		abstract public double CalculatePriority(PuzzleState state);
+
+		abstract public PuzzleState ResolveTie(List<PuzzleState> paths);
 	}
 }
