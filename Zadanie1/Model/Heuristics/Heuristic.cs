@@ -27,8 +27,16 @@ namespace Heuristics
 		public PuzzleState SelectPath(PuzzleState state)
 		{
 			List<PuzzleState> legalStates = new List<PuzzleState>();
+			char lastMove;
+			if (state.Moves.Length > 0) lastMove = state.Moves[state.Moves.Length - 1];
+			else lastMove = 'N';
+
 			foreach (char d in "LDRU")
 			{
+				if (d == 'L' && lastMove == 'R') continue;
+				if (d == 'R' && lastMove == 'L') continue;
+				if (d == 'D' && lastMove == 'U') continue;
+				if (d == 'U' && lastMove == 'D') continue;
 				if (state.IsMoveLegal(d)) legalStates.Add(new PuzzleState(state, d));
 			}
 

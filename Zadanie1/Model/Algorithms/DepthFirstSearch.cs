@@ -25,6 +25,8 @@ namespace Algorithms
 			Stack<PuzzleState> states = new Stack<PuzzleState>();
 			states.Push(state);
 			PuzzleState current;
+			char[] reversedOrder = order.ToCharArray();
+			Array.Reverse(reversedOrder);
 
 			while (states.Count > 0)
 			{
@@ -34,7 +36,7 @@ namespace Algorithms
 				if (!current.IsSolved())
 				{
 					if (maxDepth == current.Moves.Length) continue;
-					foreach (char move in order)
+					foreach (char move in reversedOrder)
 					{
 						if (!current.IsMoveLegal(move)) continue;
 						states.Push(new PuzzleState(current, move));

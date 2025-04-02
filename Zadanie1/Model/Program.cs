@@ -2,6 +2,7 @@
 using Algorithms;
 using System.ComponentModel;
 using System.Reflection.PortableExecutable;
+using Heuristics;
 
 public class MainClass
 {
@@ -10,7 +11,9 @@ public class MainClass
 		PuzzleState state;
 		state = LoadBoard(args[0]);
 		DrawBoard(state);
-		Algorithm bfs = new BreadthFirstSearch("LDRU");
+		//Algorithm bfs = new BreadthFirstSearch("LDRU");
+		Heuristic heuristic = new Hamming(4, 4);
+		Algorithm bfs = new AStar(heuristic);
 		PuzzleState newState = bfs.FindSolution(state);
 		Console.WriteLine();
 		DrawBoard(newState);

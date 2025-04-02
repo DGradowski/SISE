@@ -9,59 +9,52 @@ namespace Puzzle
 	public class PuzzleState
 	{
 		private String moves;
-		private int[][] board;
+		private int[,] board;
 		private int zeroRow = 0;
 		private int zeroCol = 0;
 
 		public PuzzleState(int rows, int columns, String prevMoves = "")
 		{
-			board = new int[rows][];
-			for (int i = 0; i < rows; i++)
-			{
-				board[i] = new int[columns];
-			}
-			moves = prevMoves;
+			board = new int[rows, columns];
+			moves = "";
 		}
 
-		public PuzzleState(PuzzleState state, char move)
+		public PuzzleState(PuzzleState state, char? move = null)
 		{
-			board = new int[state.Rows][];
-			for (int i = 0; i < state.Rows; i++)
-			{
-				board[i] = new int[state.Columns];
-			}
-
+			board = new int[state.Rows, state.Columns];
 			for (int i = 0; i < state.Rows; i++)
 			{
 				for (int j = 0; j < state.Columns; j++)
 				{
-					board[i][j] = state.GetCell(i, j);
+					board[i,j] = state.GetCell(i, j);
 				}
 			}
 			moves = state.Moves + move;
-			MakeMove(move);
+			if (move != null) MakeMove((char) move);
 		}
 
-		public int Rows => board.Length;
-		public int Columns => board[0].Length;
+		public int Rows => board.GetLength(0);
+		public int Columns => board.GetLength(1);
 		public string Moves => moves;
-		public int GetCell(int row, int column) { return board[row][column]; }
-		public void SetCell(int row, int column, int value) { board[row][column] = value; }
+
+		public int[,] Board => board;
+		public int GetCell(int row, int column) { return board[row,column]; }
+		public void SetCell(int row, int column, int value) { board[row,column] = value; }
 
 
 		public bool IsSolved()
 		{
-			for (int i = 0; i < board.Length; i++)
+			for (int i = 0; i < Rows; i++)
 			{
-				for(int j = 0; j < board[i].Length; j++)
+				for(int j = 0; j < Columns; j++)
 				{
-					if (i == board.Length - 1 && j == board[i].Length - 1)
+					if (i == Rows - 1 && j == Columns - 1)
 					{
-						if (board[i][j] != 0) return false;
+						if (board[i,j] != 0) return false;
 					}
 					else
 					{
-						if (board[i][j] != i * board[i].Length + j + 1) return false;
+						if (board[i, j] != i * Columns + j + 1) return false;
 					}
 				}
 			}
@@ -84,28 +77,28 @@ namespace Puzzle
 			switch (move)
 			{
 				case 'L':
-					(board[zeroRow][zeroCol], board[zeroRow][zeroCol - 1]) = (board[zeroRow][zeroCol - 1], board[zeroRow][zeroCol]);
+					(board[zeroRow, zeroCol], board[zeroRow, zeroCol - 1]) = (board[zeroRow, zeroCol - 1], board[zeroRow, zeroCol]);
 					break;
 				case 'R':
-					(board[zeroRow][zeroCol], board[zeroRow][zeroCol + 1]) = (board[zeroRow][zeroCol + 1], board[zeroRow][zeroCol]);
+					(board[zeroRow, zeroCol], board[zeroRow, zeroCol + 1]) = (board[zeroRow, zeroCol + 1], board[zeroRow, zeroCol]);
 					break;
 				case 'U':
-					(board[zeroRow][zeroCol], board[zeroRow - 1][zeroCol]) = (board[zeroRow - 1][zeroCol], board[zeroRow][zeroCol]);
+					(board[zeroRow, zeroCol], board[zeroRow - 1, zeroCol]) = (board[zeroRow - 1, zeroCol], board[zeroRow, zeroCol]);
 					break;
 				case 'D':
-					(board[zeroRow][zeroCol], board[zeroRow + 1][zeroCol]) = (board[zeroRow + 1][zeroCol], board[zeroRow][zeroCol]);
+					(board[zeroRow, zeroCol], board[zeroRow + 1, zeroCol]) = (board[zeroRow + 1, zeroCol], board[zeroRow, zeroCol]);
 					break;
 			}
 		}
 
 		public void FindZero()
 		{
-			if (board[zeroRow][zeroCol] == 0) return;
+			if (board[zeroRow, zeroCol] == 0) return;
 			for (int i = 0; i < Rows; i++)
 			{
 				for (int j = 0; j < Columns; j++)
 				{
-					if (board[i][j] == 0)
+					if (board[i, j] == 0)
 					{
 						zeroRow = i;
 						zeroCol = j;
@@ -113,6 +106,33 @@ namespace Puzzle
 					}
 				}
 			}
+		}
+
+		public String BoardToKey()
+		{
+			String key = "";
+			for (int i = 0; i < Rows; i++)
+			{
+				for (int j = 0; j < Columns; j++)
+				{
+					key += board[i, j].ToString() + " ";
+				}
+			}
+			return key;
+		}
+
+		public bool CompareBoard(PuzzleState s)
+		{
+			if (s.Rows != Rows) return false;
+			if (s.Columns != Columns) return false;
+			for (int i = 0;i < Rows; i++)
+			{
+				for (int j = 0; j < Columns; j++)
+				{
+					if (s.GetCell(i, j) !=  GetCell(i, j)) return false;
+				}
+			}
+			return true;
 		}
 	}
 }
