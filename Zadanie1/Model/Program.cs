@@ -3,26 +3,57 @@ using Algorithms;
 using System.ComponentModel;
 using System.Reflection.PortableExecutable;
 using Heuristics;
+using System.Xml;
 
 public class MainClass
 {
 	static void Main(string[] args)
 	{
+		Algorithm a;
+		switch (args[0])
+		{
+			case "bfs":
+				a = new BreadthFirstSearch(args[1]);
+				break;
+			case "dfs":
+				a = new DepthFirstSearch(args[1], 20);
+				break;
+			default:
+				Heuristic h;
+				if (args[1] == "manh")
+				{
+					h = new Manhattan(4, 4);
+				}
+				else
+				{
+					h = new Hamming(4, 4);
+				}
+				a = new AStar(h);
+				break;
+		}
 		PuzzleState state;
-		state = LoadBoard(args[0]);
-		DrawBoard(state);
-		//Algorithm bfs = new BreadthFirstSearch("LDRU");
-		Heuristic heuristic = new Manhattan(4, 4);
-		Algorithm bfs = new AStar(heuristic, 1);
-		PuzzleState newState = bfs.FindSolution(state);
-		Console.WriteLine();
-		DrawBoard(newState);
-		Console.WriteLine("Rozwiązanie: {0}", newState.Moves);
-		Console.WriteLine("Długość znalezionego rozwiązania: {0}", bfs.SolutionLength);
-		Console.WriteLine("Liczba stanów odwiedzonych: {0}", bfs.CheckedStates);
-		Console.WriteLine("Liczba stanów przetworzonych: {0}", bfs.ProcessedStates);
-		Console.WriteLine("Maksymalna osiągnięta głębokość rekursji: {0}", bfs.RecursionDepth);
-		Console.WriteLine("Czas trwania procesu obliczeniowego (ms): {0}", bfs.Time);
+		state = LoadBoard(args[2]);
+		PuzzleState newState = a.FindSolution(state);
+		String[] lines = new String[2];
+		lines[1] = newState.Moves;
+		lines[0] = a.SolutionLength.ToString();
+
+		SaveToFile(args[3], lines);
+		lines = new String[5];
+		lines[0] = a.SolutionLength.ToString();
+		lines[1] = a.CheckedStates.ToString();
+		lines[2] = a.ProcessedStates.ToString();
+		lines[3] = a.RecursionDepth.ToString();
+		lines[4] = a.Time.ToString();
+
+		SaveToFile(args[4], lines);
+		
+		//Console.WriteLine("Rozwiązanie: {0}", newState.Moves);
+		//Console.WriteLine("Długość znalezionego rozwiązania: {0}", bfs.SolutionLength);
+		//Console.WriteLine("Liczba stanów odwiedzonych: {0}", bfs.CheckedStates);
+		//Console.WriteLine("Liczba stanów przetworzonych: {0}", bfs.ProcessedStates);
+		//Console.WriteLine("Maksymalna osiągnięta głębokość rekursji: {0}", bfs.RecursionDepth);
+		//Console.WriteLine("Czas trwania procesu obliczeniowego (ms): {0}", bfs.Time);
 	}
 
 	//  strategia "wszerz" z porządkiem przeszukiwania sąsiedztwa prawo-dół-góra-lewo:
@@ -71,4 +102,15 @@ public class MainClass
 			Console.WriteLine(line);
 		}
 	}
+
+	static void SaveToFile(String file, String[] s)
+	{
+		using (StreamWriter sw = new StreamWriter(file))
+		{
+			foreach(String s2 in s)
+			{
+				sw.WriteLine(s2);
+			}
+		}
+	} 
 }
