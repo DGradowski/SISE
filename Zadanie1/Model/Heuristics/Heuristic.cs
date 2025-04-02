@@ -10,12 +10,18 @@ namespace Heuristics
 	abstract public class Heuristic
 	{
 		private String orderPriority;
+		private int rows;
+		private int cols;
 
 		public string OrderPriority { get => orderPriority; }
+		public int Rows { get => rows; }
+		public int Cols { get => cols; }
 
-		protected Heuristic(string priority = "")
+		protected Heuristic(int rows, int cols, string priority = "")
 		{
 			orderPriority = priority;
+			this.rows = rows;
+			this.cols = cols;
 		}
 
 		public PuzzleState SelectPath(PuzzleState state)
@@ -49,7 +55,7 @@ namespace Heuristics
 			else return ResolveTie(states);
 		}
 
-		abstract public double CalculatePriority(PuzzleState state);
+		abstract public int CalculatePriority(PuzzleState state);
 
 		abstract public PuzzleState ResolveTie(List<PuzzleState> paths);
 	}
