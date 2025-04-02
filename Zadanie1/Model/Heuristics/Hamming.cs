@@ -9,7 +9,7 @@ namespace Heuristics
 {
 	public class Hamming : Heuristic
 	{
-		public Hamming(int rows, int cols, string priority = "") : base(rows, cols, priority)
+		public Hamming(int rows, int cols) : base(rows, cols)
 		{
 
 		}
@@ -26,20 +26,6 @@ namespace Heuristics
 				}
 			}
 			return fields;
-		}
-
-		public override PuzzleState ResolveTie(List<PuzzleState> paths)
-		{
-			Random rng = new Random();
-			if (OrderPriority == "") return paths[rng.Next(paths.Count)];
-			foreach (char d in OrderPriority)
-			{
-				foreach (PuzzleState path in paths)
-				{
-					if (path.Moves[path.Moves.Length - 1] == d) return path;
-				}
-			}
-			return paths[0];
 		}
 	}
 }
