@@ -25,10 +25,15 @@ namespace Algorithms
 			var watch = System.Diagnostics.Stopwatch.StartNew();
 			Dictionary<string, (PuzzleState state, int value)> visited = new Dictionary<string, (PuzzleState, int)>();
 			Dictionary<string, (PuzzleState state, int value)> paths = new Dictionary<string, (PuzzleState, int)>();
+			List<PuzzleState> bestStates = new List<PuzzleState>();
 			Random rng = new Random();
 
 			while (!state.IsSolved())
 			{
+				String key = state.BoardToKey();
+				visited.Add(key, (state, state.Moves.Length * moveScale + heuristic.CalculatePriority(state)));
+				if (paths.ContainsKey(key)) paths.Remove(key);
+
 				foreach (char d in order)
 				{
 					if (!state.IsMoveLegal(d)) continue;
@@ -49,31 +54,28 @@ namespace Algorithms
 						paths.Add(newState.BoardToKey(), (newState, v));
 					}
 				}
-				List<PuzzleState> bestStates = new List<PuzzleState>();
+				
+				bestStates.Clear();
 				string[] keys = paths.Keys.ToArray();
 				int bestValue = paths[keys[0]].value;
-				foreach (string key in keys)
+				foreach (string k in keys)
 				{
-					if (paths[key].value == bestValue)
+					if (paths[k].value == bestValue)
 					{
-						bestStates.Add(paths[key].state);
+						bestStates.Add(paths[k].state);
 					}
-					else if (paths[key].value < bestValue)
+					else if (paths[k].value < bestValue)
 					{
 						bestStates.Clear();
-						bestValue = paths[key].value;
-						bestStates.Add(paths[key].state);
+						bestValue = paths[k].value;
+						bestStates.Add(paths[k].state);
 					}
 				}
-				if (!visited.ContainsKey(state.BoardToKey()))
-				{
-					visited.Add(state.BoardToKey(), (state, state.Moves.Length * moveScale + heuristic.CalculatePriority(state)));
-				}
-				if (paths.ContainsKey(state.BoardToKey())) paths.Remove(state.BoardToKey());
 				state = bestStates[rng.Next(bestStates.Count)];
 				if (RecursionDepth < state.Moves.Length) RecursionDepth = state.Moves.Length;
 			}
-			Time = watch.ElapsedMilliseconds;
+			watch.Stop();
+			Time = watch.Elapsed.TotalMilliseconds;
 			CheckedStates = visited.Count;
 			SolutionLength = state.Moves.Length;
 			return state;

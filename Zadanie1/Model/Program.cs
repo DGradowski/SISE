@@ -44,7 +44,7 @@ public class MainClass
 		lines[1] = a.CheckedStates.ToString();
 		lines[2] = a.ProcessedStates.ToString();
 		lines[3] = a.RecursionDepth.ToString();
-		lines[4] = a.Time.ToString();
+		lines[4] = a.Time.ToString("F3");
 
 		SaveToFile(args[4], lines);
 		
@@ -67,7 +67,7 @@ public class MainClass
 	{
 		using (StreamReader reader = new StreamReader(file))
 		{
-			string[] words = reader.ReadToEnd().Split(' ', '\n');
+			string[] words = reader.ReadToEnd().Split(new []{ ' ', '\n', '\r' },StringSplitOptions.RemoveEmptyEntries);
 
 			int rows = Int32.Parse(words[0]);
 			int columns = Int32.Parse(words[0]);

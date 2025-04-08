@@ -20,6 +20,7 @@ namespace Algorithms
 
 		public override PuzzleState FindSolution(PuzzleState state)
 		{
+			HashSet<String> visited = new HashSet<String>();
 			RecursionDepth = 0;
 			var watch = System.Diagnostics.Stopwatch.StartNew();
 			Stack<PuzzleState> states = new Stack<PuzzleState>();
@@ -39,6 +40,8 @@ namespace Algorithms
 					foreach (char move in reversedOrder)
 					{
 						if (!current.IsMoveLegal(move)) continue;
+						PuzzleState newState = new PuzzleState(current, move);
+						if (visited.Contains(newState.BoardToKey())) continue;
 						states.Push(new PuzzleState(current, move));
 						ProcessedStates++;
 					}
@@ -47,7 +50,7 @@ namespace Algorithms
 				{
 					SolutionLength = current.Moves.Length;
 					watch.Stop();
-					Time = watch.ElapsedMilliseconds;
+					Time = watch.Elapsed.TotalMilliseconds;
 					return current;
 				}
 			}

@@ -2,7 +2,7 @@
   "profiles": {
     "Model": {
       "commandName": "Project",
-      "commandLineArgs": "plansza.txt"
+      "commandLineArgs": "astr mann plansza.txt plansza_sol.txt plansza_stats.txt"
     }
   }
 }
