@@ -32,6 +32,7 @@ namespace Algorithms
 			while (states.Count > 0)
 			{
 				current = states.Pop();
+				visited.Add(current.BoardToKey());
 				if (current.Moves.Length > RecursionDepth) RecursionDepth = current.Moves.Length;
 				CheckedStates++;
 				if (!current.IsSolved())
