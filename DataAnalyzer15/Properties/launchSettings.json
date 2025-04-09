@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "DataAnalyzer15": {
+      "commandName": "Project",
+      "commandLineArgs": "3x3.txt\r\n"
+    }
+  }
+}

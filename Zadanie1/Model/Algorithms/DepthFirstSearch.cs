@@ -20,7 +20,6 @@ namespace Algorithms
 
 		public override PuzzleState FindSolution(PuzzleState state)
 		{
-			HashSet<String> visited = new HashSet<String>();
 			RecursionDepth = 0;
 			var watch = System.Diagnostics.Stopwatch.StartNew();
 			Stack<PuzzleState> states = new Stack<PuzzleState>();
@@ -32,7 +31,6 @@ namespace Algorithms
 			while (states.Count > 0)
 			{
 				current = states.Pop();
-				visited.Add(current.BoardToKey());
 				if (current.Moves.Length > RecursionDepth) RecursionDepth = current.Moves.Length;
 				CheckedStates++;
 				if (!current.IsSolved())
@@ -41,9 +39,16 @@ namespace Algorithms
 					foreach (char move in reversedOrder)
 					{
 						if (!current.IsMoveLegal(move)) continue;
+						if (current.Moves.Length > 1)
+						{
+							char lastMove = current.Moves[current.Moves.Length - 1];
+							if (lastMove == 'R' && move == 'L') continue;
+							if (lastMove == 'L' && move == 'R') continue;
+							if (lastMove == 'D' && move == 'U') continue;
+							if (lastMove == 'U' && move == 'D') continue;
+						}
 						PuzzleState newState = new PuzzleState(current, move);
-						if (visited.Contains(newState.BoardToKey())) continue;
-						states.Push(new PuzzleState(current, move));
+						states.Push(newState);
 						ProcessedStates++;
 					}
 				}

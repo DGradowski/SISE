@@ -20,33 +20,42 @@ public class MainClass
 				break;
 			default:
 				Heuristic h;
+				PuzzleState x;
+				x = LoadBoard(args[2]);
 				if (args[1] == "manh")
 				{
-					h = new Manhattan(4, 4);
+					h = new Manhattan(x.Rows, x.Columns);
 				}
 				else
 				{
-					h = new Hamming(4, 4);
+					h = new Hamming(x.Rows, x.Columns);
 				}
 				a = new AStar(h);
 				break;
 		}
-		PuzzleState state;
-		state = LoadBoard(args[2]);
-		PuzzleState newState = a.FindSolution(state);
-		String[] lines = new String[2];
-		lines[1] = newState.Moves;
-		lines[0] = a.SolutionLength.ToString();
+		try
+		{
+			PuzzleState state;
+			state = LoadBoard(args[2]);
+			PuzzleState newState = a.FindSolution(state);
+			String[] lines = new String[2];
+			lines[1] = newState.Moves;
+			lines[0] = a.SolutionLength.ToString();
 
-		SaveToFile(args[3], lines);
-		lines = new String[5];
-		lines[0] = a.SolutionLength.ToString();
-		lines[1] = a.CheckedStates.ToString();
-		lines[2] = a.ProcessedStates.ToString();
-		lines[3] = a.RecursionDepth.ToString();
-		lines[4] = a.Time.ToString("F3");
+			SaveToFile(args[3], lines);
+			lines = new String[5];
+			lines[0] = a.SolutionLength.ToString();
+			lines[1] = a.CheckedStates.ToString();
+			lines[2] = a.ProcessedStates.ToString();
+			lines[3] = a.RecursionDepth.ToString();
+			lines[4] = a.Time.ToString("F3");
 
-		SaveToFile(args[4], lines);
+			SaveToFile(args[4], lines);
+		}
+		catch (Exception e) 
+		{
+			throw new Exception(args[2]);
+		}
 		
 		//Console.WriteLine("Rozwiązanie: {0}", newState.Moves);
 		//Console.WriteLine("Długość znalezionego rozwiązania: {0}", bfs.SolutionLength);

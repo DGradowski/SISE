@@ -24,11 +24,11 @@ namespace Algorithms
 			Queue<PuzzleState> states = new Queue<PuzzleState>();
 			states.Enqueue(state);
 			PuzzleState current;
+			visited.Add(state.BoardToKey());
 
 			while (states.Count > 0)
 			{
 				current = states.Dequeue();
-				visited.Add(current.BoardToKey());
 				if (current.Moves.Length > RecursionDepth) RecursionDepth = current.Moves.Length;
 				CheckedStates++;
 				if (!current.IsSolved())
@@ -39,6 +39,7 @@ namespace Algorithms
 						PuzzleState newState = new PuzzleState(current, move);
 						if (visited.Contains(newState.BoardToKey())) continue;
 						states.Enqueue(newState);
+						visited.Add(newState.BoardToKey());
 						ProcessedStates++;
 					}
 				} else
